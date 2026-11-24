@@ -2719,7 +2719,7 @@ Object.entries(AX).forEach(([ax,id])=>$$('#'+id+' button').forEach(b=>b.addEvent
   update(true)})));
 /* Palette: öffnet an Stelle von Effekt/Extras, Auswahl schliesst sie */
 const palBtn=$('#palBtn'),colCtrl=$('#colCtrl'),atel=$('#atelier');
-function pal(open){colCtrl.classList.toggle('pal',open);atel.classList.toggle('pal-open',open);palBtn.setAttribute('aria-expanded',open);palBtn.textContent=open?'Schliessen ×':'+ Palette'}
+function pal(open){colCtrl.classList.toggle('pal',open);atel.classList.toggle('pal-open',open);palBtn.setAttribute('aria-expanded',open);palBtn.textContent=open?'− Palette':'+ Palette'}
 palBtn.addEventListener('click',()=>pal(!colCtrl.classList.contains('pal')));
 $$('#segCol button').forEach(b=>b.addEventListener('click',()=>{if(colCtrl.classList.contains('pal')&&!b.disabled)pal(false)}));
 addEventListener('keydown',e=>{if(e.key==='Escape'&&colCtrl.classList.contains('pal'))pal(false)});
