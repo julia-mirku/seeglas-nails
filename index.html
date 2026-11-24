@@ -441,6 +441,15 @@ body.lb-open{overflow:hidden}
 .ready .logo:hover b{color:var(--gold-2);text-shadow:0 0 14px rgba(125,189,180,.6)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* Abstände zwischen den Blöcken (Julia 24.11): höchstens ~120 px Computer, ~90 px Telefon */
+:root{--sy:clamp(34px,4vw,54px)}
+.sec,#atelier.sec{padding:var(--sy) 0}
+#bewertungen.sec{padding:var(--sy) 0!important}
+.hero{padding-bottom:var(--sy)}
+.fenster{padding-top:var(--sy)}
+/* erster Bildschirm ist zentriert und hat unten schon Luft */
+@media (min-width:901px){.hero{padding-bottom:14px;min-height:min(100svh,800px)}}
 </style>
 </head>
 <body>
