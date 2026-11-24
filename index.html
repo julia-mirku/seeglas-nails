@@ -2817,9 +2817,13 @@ new IntersectionObserver(es=>es.forEach(e=>{stageVis=e.isIntersecting;upMini()})
 new IntersectionObserver(es=>es.forEach(e=>{setVis=e.isIntersecting;upMini()}),{threshold:0}).observe($('#setgrid>div:last-child'));
 // alle Fotos vorladen und dekodieren, damit beim Wechsel nichts aufblitzt
 /* sofort nur helle Haut vorladen; Hautton-Fotos beim ersten Griff zum Schieber */
-const preload=f=>Object.entries(FR).forEach(([k,n])=>{if(f(k)){const i=new Image();i.src=SRC(n);i.decode&&i.decode().catch(()=>{})}});
-preload(k=>!/\|T[2-9]$/.test(k));
-let tonesLoaded=false;['pointerdown','focus','input'].forEach(e=>toneR.addEventListener(e,()=>{if(!tonesLoaded){tonesLoaded=true;preload(k=>/\|T[2-9]$/.test(k))}},{once:false}));
+/* Vorladen schonend (GitHub Pages antwortet sonst 429): nur Fotos einen Klick entfernt, höchstens 4 gleichzeitig */
+const NB={done:new Set(),q:[],busy:0};
+function nbPump(){while(NB.busy<4&&NB.q.length){const src=NB.q.shift();if(NB.done.has(src))continue;NB.done.add(src);NB.busy++;const i=new Image();const fin=()=>{NB.busy--;nbPump()};i.onload=fin;i.onerror=()=>{NB.done.delete(src);fin()};i.src=src}}
+function nbQueue(){const c=curF;if(!c)return;NB.q=[];const seen=new Set();
+  FRAMES.forEach(f=>{let d=0;for(const a of AXES){if(f[a]!==c[a]&&f[a]!=='*'&&c[a]!=='*'){if(++d>1)break}}if(d===1||(d===0&&f!==c)){const s=SRC(f.n);if(!NB.done.has(s)&&!seen.has(s)){seen.add(s);NB.q.push(s)}}});
+  NB.q.sort((x,y)=>(/_T[2-9]\./.test(x)?1:0)-(/_T[2-9]\./.test(y)?1:0));nbPump()}
+const _sp=showPhoto;showPhoto=function(){_sp();NB.done.add(curSrc);setTimeout(nbQueue,350)};
 update();
 const setIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){setTimeout(()=>{$('#setgrid').classList.add('set-live');upMini()},900);setIO.disconnect()}}),{threshold:.05});
 setIO.observe($('#setgrid'));
