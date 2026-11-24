@@ -450,6 +450,11 @@ body.lb-open{overflow:hidden}
 .fenster{padding-top:var(--sy)}
 /* erster Bildschirm ist zentriert und hat unten schon Luft */
 @media (min-width:901px){.hero{padding-bottom:14px;min-height:min(100svh,800px)}}
+
+/* Holly 24.11: Kopfzeile beim Scrollen dicht, über allen Ebenen; darunter weicher Auslauf statt harter Kante */
+.top{z-index:60}
+.top.scrolled{background:var(--pearl);backdrop-filter:none;-webkit-backdrop-filter:none}
+.top.scrolled::after{content:"";position:absolute;left:0;right:0;top:100%;height:16px;background:linear-gradient(var(--pearl),transparent);pointer-events:none}
 </style>
 </head>
 <body>
